@@ -114,7 +114,7 @@ This is the foundation release with core functionality:
 
 | Metric | Result |
 |--------|--------|
-| Test Coverage | 98% |
+| Test Coverage | 100% |
 | Tests | 48 passed |
 | Python | 3.10, 3.11, 3.12 |
 | Django | 4.2, 5.0, 5.1 |
