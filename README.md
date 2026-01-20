@@ -41,10 +41,10 @@ Define rules once. Use everywhere.
 
 ```bash
 # From GitHub
-pip install git+https://github.com/YOUR_USERNAME/django-shield.git
+pip install git+https://github.com/meinsoft/django-shield.git
 
 # From source
-git clone https://github.com/YOUR_USERNAME/django-shield.git
+git clone https://github.com/meinsoft/django-shield.git
 cd django-shield
 pip install -e .
 ```
