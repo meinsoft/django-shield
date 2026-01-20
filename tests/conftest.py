@@ -6,6 +6,26 @@ from django.http import HttpRequest
 
 from django_shield.rules import RuleRegistry
 
+import django
+from django.conf import settings
+
+if not settings.configured:
+    settings.configure(
+        DEBUG=True,
+        DATABASES={
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': ':memory:',
+            }
+        },
+        INSTALLED_APPS=[
+            'django.contrib.contenttypes',
+            'django.contrib.auth',
+            'tests',
+        ],
+        DEFAULT_AUTO_FIELD='django.db.models.BigAutoField',
+    )
+    django.setup()
 
 class MockUser:
     def __init__(
