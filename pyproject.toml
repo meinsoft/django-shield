@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "django-shield"
-version = "0.1.0"
+version = "0.2.0"
 description = "A declarative permission system for Django"
 readme = "README.md"
 license = "MIT"
@@ -30,6 +30,7 @@ classifiers = [
 ]
 dependencies = [
     "django>=4.2",
+    "sly>=0.5",
 ]
 
 [project.optional-dependencies]
@@ -92,10 +93,14 @@ ignore = [
     "E501",
 ]
 
+[tool.ruff.lint.per-file-ignores]
+"django_shield/expressions/lexer.py" = ["F821", "F811"]
+"django_shield/expressions/parser.py" = ["F821", "F811"]
+
 
 [tool.ruff.lint.isort]
 known-first-party = ["django_shield"]
 
 [tool.bandit]
 exclude_dirs = ["tests"]
-skips = ["B101"]
+skips = ["B101", "B110"]

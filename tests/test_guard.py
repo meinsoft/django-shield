@@ -40,17 +40,17 @@ class TestGuardBasic:
 
         assert exc_info.value.rule_name == "always_deny"
 
-    def test_raises_value_error_for_unknown_rule(
-        self, mock_request: HttpRequest
-    ) -> None:
+    def test_raises_error_for_unknown_rule(self, mock_request):
+        from django_shield.exceptions import ExpressionEvaluationError
+
         @guard("nonexistent_rule")
-        def my_view(request: HttpRequest) -> HttpResponse:
+        def my_view(request):
             return HttpResponse("success")
 
-        with pytest.raises(ValueError) as exc_info:
+        with pytest.raises(ExpressionEvaluationError) as exc_info:
             my_view(mock_request)
 
-        assert "Rule 'nonexistent_rule' not found" in str(exc_info.value)
+        assert "nonexistent_rule" in str(exc_info.value)
 
     def test_preserves_view_function_metadata(self) -> None:
         @rule
