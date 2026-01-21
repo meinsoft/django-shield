@@ -3,7 +3,7 @@
 [![Python](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org/)
 [![Django](https://img.shields.io/badge/django-4.2%2B-green)](https://www.djangoproject.com/)
 [![Coverage](https://img.shields.io/badge/coverage-96%25-brightgreen)]()
-[![Tests](https://img.shields.io/badge/tests-192%20passed-brightgreen)]()
+[![Tests](https://img.shields.io/badge/tests-217%20passed-brightgreen)]()
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
 **Declarative permission system for Django.** Define rules once, protect views with a decorator.
@@ -54,6 +54,9 @@ def edit_post(request, pk):
 |---------|-------------|
 | **Expression Syntax** | Write rules as readable strings: `'is_admin or obj.author == user'` |
 | **@guard Decorator** | One decorator protects your entire view |
+| **guard.all()** | All rules must pass |
+| **guard.any()** | At least one rule must pass |
+| **Debug Mode** | Console logging for permission checks |
 | **CBV Support** | Works with both function-based and class-based views |
 | **Object Injection** | Auto-fetch and inject objects into your views |
 | **Rule Registry** | Define complex rules once, reuse everywhere |
@@ -238,6 +241,41 @@ def my_rule(user, obj):
     return True
 ```
 
+### Chained Guards
+```python
+# All rules must pass
+@guard.all(
+    'user.is_authenticated',
+    'is_author or is_admin',
+    'obj.status != "locked"'
+)
+def edit_post(request, pk):
+    ...
+
+# At least one rule must pass
+@guard.any(
+    'user.is_superuser',
+    'is_author',
+    'obj.is_public'
+)
+def view_post(request, pk):
+    ...
+```
+
+### Debug Mode
+```python
+# settings.py
+DJANGO_SHIELD = {
+    'DEBUG': True
+}
+
+# Console output:
+# [Django Shield] Checking: is_author or is_admin
+# [Django Shield] User: john (id=1)
+# [Django Shield] Object: Post "Hello" (id=5)
+# [Django Shield] Result: ALLOWED
+```
+
 ### Exceptions
 
 ```python
@@ -375,10 +413,10 @@ def edit_settings(request, pk):
 |---------|----------|--------|
 | 0.1.0 | @rule, @guard, inject | ✅ Released |
 | 0.2.0 | CBV support, Expression syntax | ✅ Released |
+| 0.2.1 | guard.all(), guard.any(), Debug mode | ✅ Released |
 | 0.3.0 | SQL compilation, Queryset filtering | 🔜 Coming |
 | 0.4.0 | Django REST Framework integration | 📋 Planned |
 | 1.0.0 | Async support, Caching | 📋 Planned |
-
 ---
 
 ## Contributing
@@ -395,6 +433,7 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 ## Links
 
+- [Documentation](https://meinsoft.github.io/django-shield)
 - [GitHub Repository](https://github.com/meinsoft/django-shield)
 - [Issue Tracker](https://github.com/meinsoft/django-shield/issues)
 - [Changelog](https://github.com/meinsoft/django-shield/releases)
